@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosette's Summer Mission Dashboard 🌞</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        fun: ['"Fredoka"', 'sans-serif'],
+                    },
+                    colors: {
+                        sunny: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        coral: {
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                        },
+                        adventure: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                        },
+                        cosmic: {
+                            50: '#faf5ff',
+                            100: '#f3e8ff',
+                            200: '#e9d5ff',
+                            500: '#a855f7',
+                            600: '#9333ea',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #fefcf3;
+            background-image: 
+                radial-gradient(#fde68a 1px, transparent 1px), 
+                radial-gradient(#fde68a 1px, #fefcf3 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+        }
+        .bouncy-hover:hover {
+            transform: translateY(-4px) scale(1.02);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .tab-transition {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="font-sans text-stone-800 min-h-screen pb-16">
+
+    <!-- Playful Sun Header & Stats -->
+    <header class="relative overflow-hidden bg-gradient-to-r from-sunny-300 via-amber-200 to-orange-200 py-10 px-4 shadow-sm border-b-4 border-sunny-400">
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-sunny-400 rounded-full opacity-40 blur-lg animate-pulse"></div>
+        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-coral-200 rounded-full opacity-30 blur-md"></div>
+        
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+            <div class="text-center md:text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/70 backdrop-blur-sm rounded-full text-xs font-bold text-orange-700 tracking-wider uppercase shadow-sm mb-3">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                    </span>
+                    Ready for Year 3 @ CKY
+                </div>
+                <h1 class="font-fun text-4xl md:text-5xl font-extrabold text-stone-900 tracking-tight leading-none mb-3 drop-shadow-sm">
+                    Cosette's Summer Mission 🌞
+                </h1>
+                <p class="text-stone-700 text-lg font-medium">
+                    Becoming a Better Storyteller: <span class="text-orange-600 font-bold italic">"Good writers notice more."</span>
+                </p>
+            </div>
+
+            <!-- Progress Card -->
+            <div class="bg-white/90 backdrop-blur-md rounded-2xl p-5 shadow-lg border-2 border-amber-300 flex items-center gap-5 w-full md:w-auto min-w-[280px]">
+                <div class="relative flex items-center justify-center w-16 h-16">
+                    <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="32" cy="32" r="28" stroke="#fef3c7" stroke-width="6" fill="transparent"></circle>
+                        <circle id="progressCircle" cx="32" cy="32" r="28" stroke="#f59e0b" stroke-width="6" fill="transparent" stroke-dasharray="175.9" stroke-dashoffset="175.9" stroke-linecap="round" class="transition-all duration-500"></circle>
+                    </svg>
+                    <span id="progressPercent" class="absolute font-fun text-lg font-bold text-stone-900">0%</span>
+                </div>
+                <div>
+                    <h3 class="font-fun text-base font-bold text-stone-900">Mission Meter</h3>
+                    <p class="text-xs text-stone-500 mb-1">Check off tasks below to level up!</p>
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-amber-700 bg-amber-50 px-2 py-1 rounded-md">
+                        <i data-lucide="award" class="w-4 h-4"></i>
+                        <span id="progressFraction">0/25 completed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 mt-8">
+
+        <!-- CONSTANT HABITS HUB (Every Week Grid) -->
+        <section class="mb-10">
+            <h2 class="font-fun text-2xl font-bold text-stone-900 mb-5 flex items-center gap-2">
+                <i data-lucide="sparkles" class="text-sunny-500 fill-sunny-200"></i> Every Week Foundations
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <!-- Reading -->
+                <div class="bg-gradient-to-b from-blue-50 to-white rounded-2xl p-5 border-2 border-blue-200 shadow-sm bouncy-hover flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-3 font-fun font-bold">📖</div>
+                        <h4 class="font-fun font-bold text-blue-900 text-lg">Reading</h4>
+                        <p class="text-xs text-blue-700/80 mt-1">Immerse in great books to gather wonderful settings.</p>
+                    </div>
+                    <span class="mt-4 inline-block text-xs font-extrabold text-blue-800 bg-blue-100/60 px-2.5 py-1 rounded-full text-center">20 mins everyday</span>
+                </div>
+                <!-- Writing -->
+                <div class="bg-gradient-to-b from-rose-50 to-white rounded-2xl p-5 border-2 border-rose-200 shadow-sm bouncy-hover flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center text-rose-600 mb-3 font-fun font-bold">✍️</div>
+                        <h4 class="font-fun font-bold text-rose-900 text-lg">Writing</h4>
+                        <p class="text-xs text-rose-700/80 mt-1">Construct stories step-by-step up the mountain.</p>
+                    </div>
+                    <span class="mt-4 inline-block text-xs font-extrabold text-rose-800 bg-rose-100/60 px-2.5 py-1 rounded-full text-center">1 Composition / wk</span>
+                </div>
+                <!-- Presentation -->
+                <div class="bg-gradient-to-b from-cosmic-50 to-white rounded-2xl p-5 border-2 border-cosmic-200 shadow-sm bouncy-hover flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 bg-cosmic-100 rounded-xl flex items-center justify-center text-cosmic-600 mb-3 font-fun font-bold">🎤</div>
+                        <h4 class="font-fun font-bold text-cosmic-900 text-lg">Speaking</h4>
+                        <p class="text-xs text-cosmic-700/80 mt-1">Present with clear voice, expression and eye-contact.</p>
+                    </div>
+                    <span class="mt-4 inline-block text-xs font-extrabold text-cosmic-800 bg-cosmic-100/60 px-2.5 py-1 rounded-full text-center">One 2-min Sharing</span>
+                </div>
+                <!-- Science -->
+                <div class="bg-gradient-to-b from-emerald-50 to-white rounded-2xl p-5 border-2 border-emerald-200 shadow-sm bouncy-hover flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 mb-3 font-fun font-bold">🔬</div>
+                        <h4 class="font-fun font-bold text-emerald-900 text-lg">Science</h4>
+                        <p class="text-xs text-emerald-700/80 mt-1">Inquire into real-world wonders (All about Dogs!).</p>
+                    </div>
+                    <span class="mt-4 inline-block text-xs font-extrabold text-emerald-800 bg-emerald-100/60 px-2.5 py-1 rounded-full text-center">Small Project</span>
+                </div>
+                <!-- Creativity -->
+                <div class="bg-gradient-to-b from-amber-50 to-white rounded-2xl p-5 border-2 border-amber-200 shadow-sm bouncy-hover flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 mb-3 font-fun font-bold">🎨</div>
+                        <h4 class="font-fun font-bold text-amber-900 text-lg">Creativity</h4>
+                        <p class="text-xs text-amber-700/80 mt-1">Draw, sketch, and pack artwork with tiny creative details.</p>
+                    </div>
+                    <span class="mt-4 inline-block text-xs font-extrabold text-amber-800 bg-amber-100/60 px-2.5 py-1 rounded-full text-center">Sketchbook Habit</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- WEEKLY NAVIGATION TABS -->
+        <section class="mb-8">
+            <div class="flex flex-wrap gap-2 justify-center bg-stone-100/80 backdrop-blur-sm p-2 rounded-2xl border-2 border-stone-200 shadow-inner">
+                <button onclick="switchTab(1)" id="tab-1" class="flex-1 min-w-[90px] py-3 px-4 rounded-xl font-fun font-bold text-sm transition-all duration-300 shadow-sm focus:outline-none bg-white text-orange-600 border-2 border-amber-300">
+                    Week 1 🏔️
+                </button>
+                <button onclick="switchTab(2)" id="tab-2" class="flex-1 min-w-[90px] py-3 px-4 rounded-xl font-fun font-bold text-sm transition-all duration-300 hover:bg-white/80 focus:outline-none text-stone-600">
+                    Week 2 🕸️
+                </button>
+                <button onclick="switchTab(3)" id="tab-3" class="flex-1 min-w-[90px] py-3 px-4 rounded-xl font-fun font-bold text-sm transition-all duration-300 hover:bg-white/80 focus:outline-none text-stone-600">
+                    Week 3 🌴
+                </button>
+                <button onclick="switchTab(4)" id="tab-4" class="flex-1 min-w-[90px] py-3 px-4 rounded-xl font-fun font-bold text-sm transition-all duration-300 hover:bg-white/80 focus:outline-none text-stone-600">
+                    Week 4 🤖
+                </button>
+                <button onclick="switchTab(5)" id="tab-5" class="flex-1 min-w-[90px] py-3 px-4 rounded-xl font-fun font-bold text-sm transition-all duration-300 hover:bg-white/80 focus:outline-none text-stone-600">
+                    Week 5 🏆
+                </button>
+            </div>
+        </section>
+
+        <!-- ACTIVE WEEK CONTAINER -->
+        <section id="weekly-content-area" class="space-y-8">
+            <!-- Week 1 Content (Default Active) -->
+            <div id="week-1-content" class="tab-transition block animate-fade-in">
+                <!-- Grid: Reading & Writing Modules -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Column 1: Reading Zone -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-blue-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-fun text-xl font-extrabold text-blue-900 flex items-center gap-2">
+                                    📖 Reading Corner
+                                </h3>
+                                <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded-full">Week 1</span>
+                            </div>
+                            
+                            <!-- Book Display -->
+                            <div class="bg-blue-50/50 p-4 rounded-2xl border border-blue-100 flex items-center gap-4 mb-4">
+                                <div class="w-12 h-16 bg-blue-600 rounded-lg shadow-sm text-white flex items-center justify-center font-fun text-2xl font-extrabold text-center select-none">P</div>
+                                <div>
+                                    <h4 class="font-bold text-stone-900 text-sm">Percy Jackson Series</h4>
+                                    <p class="text-xs text-blue-800">Mission: Finish the book!</p>
+                                </div>
+                            </div>
+
+                            <p class="text-xs text-stone-500 mb-4 italic">Goal: Write down exactly ONE sentence daily highlighting what you noticed. Do not summarize!</p>
+                            
+                            <!-- Interactive Entry Field -->
+                            <div class="space-y-2 mb-4">
+                                <label class="block text-xs font-bold text-stone-600">Today I noticed...</label>
+                                <textarea id="sentence-log-1" placeholder="Example: Percy solved the problem by... / I liked this dialogue because..." class="w-full p-3 text-xs border-2 border-stone-200 rounded-xl focus:outline-none focus:border-blue-300" rows="2"></textarea>
+                                <button onclick="saveSentenceLog(1)" class="w-full py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-fun font-bold text-xs rounded-lg transition shadow-sm">Save to Journey Journal 💾</button>
+                            </div>
+
+                            <!-- Quest Checklist -->
+                            <div class="space-y-2 pt-3 border-t border-stone-100">
+                                <label class="flex items-center gap-3 p-2 bg-stone-50 hover:bg-stone-100 rounded-xl cursor-pointer transition select-none">
+                                    <input type="checkbox" id="task-w1-r1" onchange="updateProgress()" class="w-5 h-5 rounded text-amber-500 focus:ring-amber-400">
+                                    <span class="text-xs font-semibold text-stone-700">Finish all remaining chapters of Percy Jackson!</span>
+                                </label>
+                                <label class="flex items-center gap-3 p-2 bg-stone-50 hover:bg-stone-100 rounded-xl cursor-pointer transition select-none">
+                                    <input type="checkbox" id="task-w1-r2" onchange="updateProgress()" class="w-5 h-5 rounded text-amber-500 focus:ring-amber-400">
+                                    <span class="text-xs font-semibold text-stone-700">Kept my daily "Today I noticed..." journal</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Speaking & Science card stacked -->
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-cosmic-100">
+                            <h3 class="font-fun text-xl font-extrabold text-cosmic-950 mb-4 flex items-center gap-2">
+                                🎤 Speaking Stage & 🔬 Science
+                            </h3>
+                            
+                            <div class="space-y-4">
+                                <!-- Speaking -->
+                                <div class="bg-cosmic-50/50 p-4 rounded-2xl border border-cosmic-100">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-fun font-bold text-sm text-cosmic-900">🎤 2-Minute Speech</h4>
+                                        <span class="text-[10px] font-bold text-cosmic-800 bg-cosmic-100 px-2 py-0.5 rounded-full">Practice</span>
+                                    </div>
+                                    <p class="text-xs text-stone-700">"My favourite Percy Jackson character and why I'd want them as a friend."</p>
+                                    <label class="flex items-center gap-2 mt-3 p-1.5 bg-white/70 rounded-lg cursor-pointer">
+                                        <input type="checkbox" id="task-w1-s1" onchange="updateProgress()" class="w-4 h-4 text-cosmic-500 rounded">
+                                        <span class="text-xs text-stone-600">Shared my speech confidently!</span>
+                                    </label>
+                                </div>
+
+                                <!-- Science -->
+                                <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-fun font-bold text-sm text-emerald-950">🔬 Dog Research Question</h4>
+                                        <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full">Inquiry</span>
+                                    </div>
+                                    <p class="text-xs text-stone-700 font-semibold mb-2">Pick ONE question to explore this week:</p>
+                                    <div class="grid grid-cols-1 gap-1 text-[11px] text-stone-600 mb-3 bg-white/60 p-2.5 rounded-xl">
+                                        <div>💡 Why do dogs wag their tails?</div>
+                                        <div>💡 Why do dogs sniff everything?</div>
+                                        <div>💡 Why are dogs such good helpers?</div>
+                                    </div>
+                                    <label class="flex items-center gap-2 p-1.5 bg-white/70 rounded-lg cursor-pointer">
+                                        <input type="checkbox" id="task-w1-sc1" onchange="updateProgress()" class="w-4 h-4 text-emerald-500 rounded">
+                                        <span class="text-xs text-stone-600">Selected my question & took notes!</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Writing & Language (Chinese + English Side-By-Side) -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <!-- English Writing with Interactive Story Mountain -->
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-rose-100">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-fun text-xl font-extrabold text-rose-900 flex items-center gap-2">
+                                    ✍️ English Storytelling Lab
+                                </h3>
+                                <span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Composition</span>
+                            </div>
+
+                            <div class="mb-4">
+                                <span class="text-xs text-stone-500 uppercase font-bold tracking-wide">Topic 1</span>
+                                <h4 class="font-fun font-bold text-lg text-stone-900">The Kangaroo's Lost Pouch 🦘</h4>
+                            </div>
+
+                            <!-- Graphical Story Mountain -->
+                            <div class="bg-rose-50/50 p-4 rounded-2xl border border-rose-100 mb-6">
+                                <h5 class="text-xs font-bold text-rose-900 mb-3 text-center">My Story Mountain Checklist</h5>
+                                <div class="grid grid-cols-5 gap-2 text-center text-[10px] font-bold">
+                                    <div class="bg-white p-2 rounded-lg border border-rose-200">
+                                        <div class="text-base">📍</div>
+                                        <div class="text-stone-800">Beginning</div>
+                                        <span class="text-[9px] text-stone-400">Setting/Intro</span>
+                                    </div>
+                                    <div class="bg-white p-2 rounded-lg border border-rose-200">
+                                        <div class="text-base">📈</div>
+                                        <div class="text-stone-800">Build-up</div>
+                                        <span class="text-[9px] text-stone-400">The Journey</span>
+                                    </div>
+                                    <div class="bg-white p-2 rounded-lg border border-rose-200 bg-rose-100/50">
+                                        <div class="text-base">⚠️</div>
+                                        <div class="text-rose-950">Problem</div>
+                                        <span class="text-[9px] text-stone-400">Lost Pouch!</span>
+                                    </div>
+                                    <div class="bg-white p-2 rounded-lg border border-rose-200">
+                                        <div class="text-base">🔧</div>
+                                        <div class="text-stone-800">Resolution</div>
+                                        <span class="text-[9px] text-stone-400">Clever Fix</span>
+                                    </div>
+                                    <div class="bg-white p-2 rounded-lg border border-rose-200">
+                                        <div class="text-base">🏁</div>
+                                        <div class="text-stone-800">Ending</div>
+                                        <span class="text-[9px] text-stone-400">Lesson Learnt</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Must Includes Table -->
+                            <div class="border border-stone-100 rounded-2xl overflow-hidden mb-5">
+                                <table class="w-full text-xs text-left">
+                                    <thead class="bg-rose-50 text-rose-900 font-bold">
+                                        <tr>
+                                            <th class="p-3">Required Elements</th>
+                                            <th class="p-3 text-right">Self Check</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-stone-100">
+                                        <tr>
+                                            <td class="p-3 font-semibold">⭐ Meaningful dialogue (Properly punctuated)</td>
+                                            <td class="p-3 text-right">💬</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 font-semibold">⭐ Character feeling words (excited, worried)</td>
+                                            <td class="p-3 text-right">❤️</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 font-semibold">⭐ Setting details (wild Australia)</td>
+                                            <td class="p-3 text-right">🌴</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 font-semibold">⭐ Clear ending with "one lesson learnt"</td>
+                                            <td class="p-3 text-right">💡</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <label class="flex items-center gap-3 p-3 bg-rose-50 hover:bg-rose-100 rounded-xl cursor-pointer transition select-none">
+                                <input type="checkbox" id="task-w1-eng" onchange="updateProgress()" class="w-5 h-5 rounded text-rose-500 focus:ring-rose-400">
+                                <span class="text-xs font-bold text-rose-950">My English story is complete and polished!</span>
+                            </label>
+                        </div>
+
+                        <!-- Chinese Writing Column -->
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-amber-100">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-fun text-xl font-extrabold text-amber-950 flex items-center gap-2">
+                                    🇨🇳 中文創意小寫作
+                                </h3>
+                                <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">寫作與分析</span>
+                            </div>
+
+                            <div class="mb-4">
+                                <span class="text-xs text-stone-500 uppercase font-bold tracking-wide">主題與格式</span>
+                                <h4 class="font-fun font-bold text-lg text-stone-900">四格漫畫看圖作文：《拾金不昧》</h4>
+                            </div>
+
+                            <!-- "Six Whys" Table Graphic -->
+                            <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 mb-5">
+                                <h5 class="text-xs font-extrabold text-amber-900 mb-3 text-center">寫作結構要領：六何法 + 描寫細節</h5>
+                                <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 text-center text-xs font-bold mb-4">
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">誰 (Who)</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">何時 (When)</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">何地 (Where)</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">何事 (What)</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">為何 (Why)</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">結果 (How)</div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-3 text-[11px] text-stone-700">
+                                    <div class="bg-amber-100/40 p-2.5 rounded-xl border border-amber-200/50">
+                                        <span class="font-bold text-amber-950 block mb-1">🧠 心理描寫至少一句：</span>
+                                        例如：我的心像十五個吊桶打水——七上八下。
+                                    </div>
+                                    <div class="bg-amber-100/40 p-2.5 rounded-xl border border-amber-200/50">
+                                        <span class="font-bold text-amber-950 block mb-1">🌳 環境描寫至少一句：</span>
+                                        例如：金燦燦的陽光透過樹葉灑落一地。
+                                    </div>
+                                </div>
+                            </div>
+
+                            <label class="flex items-center gap-3 p-3 bg-amber-50 hover:bg-amber-100 rounded-xl cursor-pointer transition select-none">
+                                <input type="checkbox" id="task-w1-chi" onchange="updateProgress()" class="w-5 h-5 rounded text-amber-500 focus:ring-amber-400">
+                                <span class="text-xs font-bold text-amber-950">我的中文四格文章寫好了！</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 2 Content (Hidden by default) -->
+            <div id="week-2-content" class="tab-transition hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Column 1 -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-blue-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-fun text-xl font-extrabold text-blue-900 flex items-center gap-2">
+                                    📖 Reading Corner
+                                </h3>
+                                <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded-full">Week 2</span>
+                            </div>
+                            
+                            <div class="bg-blue-50/50 p-4 rounded-2xl border border-blue-100 flex items-center gap-4 mb-4">
+                                <div class="w-12 h-16 bg-emerald-600 rounded-lg shadow-sm text-white flex items-center justify-center font-fun text-2xl font-extrabold text-center select-none">C</div>
+                                <div>
+                                    <h4 class="font-bold text-stone-900 text-sm">Charlotte's Web</h4>
+                                    <p class="text-xs text-blue-800">Only 2-3 chapters daily.</p>
+                                </div>
+                            </div>
+
+                            <p class="text-xs text-stone-500 mb-4 italic">Goal: Focus on how E.B. White describes feelings. Collect 5 beautiful sentences below:</p>
+                            
+                            <div class="space-y-2 mb-4">
+                                <label class="block text-xs font-bold text-stone-600">My Sentence Collection Journal...</label>
+                                <textarea id="sentence-log-2" placeholder="Write down or type beautiful sentences from the book..." class="w-full p-3 text-xs border-2 border-stone-200 rounded-xl focus:outline-none focus:border-blue-300" rows="3"></textarea>
+                                <button onclick="saveSentenceLog(2)" class="w-full py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-fun font-bold text-xs rounded-lg transition shadow-sm">Save to Journey Journal 💾</button>
+                            </div>
+
+                            <div class="space-y-2 pt-3 border-t border-stone-100">
+                                <label class="flex items-center gap-3 p-2 bg-stone-50 hover:bg-stone-100 rounded-xl cursor-pointer transition select-none">
+                                    <input type="checkbox" id="task-w2-r1" onchange="updateProgress()" class="w-5 h-5 rounded text-amber-500">
+                                    <span class="text-xs font-semibold text-stone-700">Read daily and studied E.B. White's descriptive words!</span>
+                                </label>
+                                <label class="flex items-center gap-3 p-2 bg-stone-50 hover:bg-stone-100 rounded-xl cursor-pointer transition select-none">
+                                    <input type="checkbox" id="task-w2-r2" onchange="updateProgress()" class="w-5 h-5 rounded text-amber-500">
+                                    <span class="text-xs font-semibold text-stone-700">Finished collecting 5 beautiful sentences</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Speaking & Science card -->
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-emerald-100">
+                            <h3 class="font-fun text-xl font-extrabold text-emerald-950 mb-4 flex items-center gap-2">
+                                🎤 Speaking & 🔬 Dog Breeds
+                            </h3>
+                            
+                            <div class="space-y-4">
+                                <div class="bg-cosmic-50/50 p-4 rounded-2xl border border-cosmic-100">
+                                    <h4 class="font-fun font-bold text-sm text-cosmic-900 mb-1">🎤 Recitation Challenge</h4>
+                                    <p class="text-xs text-stone-700">Try to share your story completely without reading off a page! Use expressive actions.</p>
+                                    <label class="flex items-center gap-2 mt-3 p-1.5 bg-white/70 rounded-lg cursor-pointer">
+                                        <input type="checkbox" id="task-w2-s1" onchange="updateProgress()" class="w-4 h-4 text-cosmic-500 rounded">
+                                        <span class="text-xs text-stone-600">Shared story elegantly without notes!</span>
+                                    </label>
+                                </div>
+
+                                <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100">
+                                    <h4 class="font-fun font-bold text-sm text-emerald-950 mb-2">🔬 Dog Breeds Comparison Chart</h4>
+                                    <div class="border border-emerald-200 rounded-xl overflow-hidden bg-white/80 text-[10px] mb-3">
+                                        <div class="grid grid-cols-3 bg-emerald-100 text-emerald-900 p-2 font-bold">
+                                            <div>Dog Breed</div>
+                                            <div>Trait</div>
+                                            <div>Special Task</div>
+                                        </div>
+                                        <div class="grid grid-cols-3 p-2 border-b border-stone-100">
+                                            <div class="font-bold">Golden Retriever</div>
+                                            <div>Friendly & Smart</div>
+                                            <div>Retrieves things / Guide dog</div>
+                                        </div>
+                                        <div class="grid grid-cols-3 p-2">
+                                            <div class="font-bold">Border Collie</div>
+                                            <div>Super Smart</div>
+                                            <div>Herding sheep</div>
+                                        </div>
+                                    </div>
+                                    <label class="flex items-center gap-2 p-1.5 bg-white/70 rounded-lg cursor-pointer">
+                                        <input type="checkbox" id="task-w2-sc1" onchange="updateProgress()" class="w-4 h-4 text-emerald-500 rounded">
+                                        <span class="text-xs text-stone-600">Completed comparison chart!</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2 -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-rose-100">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-fun text-xl font-extrabold text-rose-900 flex items-center gap-2">
+                                    ✍️ English Storytelling Lab
+                                </h3>
+                                <span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Composition</span>
+                            </div>
+
+                            <div class="mb-4">
+                                <span class="text-xs text-stone-500 uppercase font-bold tracking-wide">Topic 2</span>
+                                <h4 class="font-fun font-bold text-lg text-stone-900">The Owl Who Lost Its Hoot 🦉</h4>
+                            </div>
+
+                            <div class="bg-rose-50/50 p-4 rounded-2xl border border-rose-100 mb-5 text-xs text-stone-700 space-y-2">
+                                <p class="font-bold text-rose-900">🎯 Learning Goals for this story:</p>
+                                <p>1. **Expressing complex emotions:** Use words representing subtle emotions (embarrassed, anxious, hopeful).</p>
+                                <p>2. **Structuring resolutions:** Leave plenty of time for a fully developed ending instead of rushing it!</p>
+                            </div>
+
+                            <!-- Requirements List -->
+                            <div class="border border-stone-100 rounded-2xl overflow-hidden mb-5">
+                                <table class="w-full text-xs text-left">
+                                    <thead class="bg-rose-50 text-rose-900 font-bold">
+                                        <tr>
+                                            <th class="p-3">Required Elements</th>
+                                            <th class="p-3 text-right">Self Check</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-stone-100">
+                                        <tr>
+                                            <td class="p-3 font-semibold">⭐ Divided cleanly into at least 3 distinct paragraphs</td>
+                                            <td class="p-3 text-right">📄</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 font-semibold">⭐ Includes at least 3 advanced feeling words</td>
+                                            <td class="p-3 text-right">❤️</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 font-semibold">⭐ Descriptive ending showing the forest environment</td>
+                                            <td class="p-3 text-right">🌲</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <label class="flex items-center gap-3 p-3 bg-rose-50 hover:bg-rose-100 rounded-xl cursor-pointer transition select-none">
+                                <input type="checkbox" id="task-w2-eng" onchange="updateProgress()" class="w-5 h-5 rounded text-rose-500">
+                                <span class="text-xs font-bold text-rose-950">Finished the Owl story!</span>
+                            </label>
+                        </div>
+
+                        <!-- Chinese -->
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-amber-100">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-fun text-xl font-extrabold text-amber-950 flex items-center gap-2">
+                                    🇨🇳 中文寫作進階
+                                </h3>
+                                <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">命題作文</span>
+                            </div>
+
+                            <div class="mb-4">
+                                <span class="text-xs text-stone-500 uppercase font-bold tracking-wide">主題與格式</span>
+                                <h4 class="font-fun font-bold text-lg text-stone-900">《我最難忘的一天》</h4>
+                            </div>
+
+                            <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 mb-5 text-xs">
+                                <div class="grid grid-cols-4 gap-2 text-center font-bold mb-3">
+                                    <div class="bg-white p-2 rounded-lg border">起因 🎬</div>
+                                    <div class="bg-white p-2 rounded-lg border">經過 🧗</div>
+                                    <div class="bg-white p-2 rounded-lg border">結果 🏁</div>
+                                    <div class="bg-white p-2 rounded-lg border">感受 ❤️</div>
+                                </div>
+                                <div class="space-y-1.5 text-stone-700 bg-white/80 p-3 rounded-xl border border-amber-200">
+                                    <div>✨ **好詞累積：** 必須包含至少**兩個形容詞** (例如：興高采烈、五彩繽紛)</div>
+                                    <div>✨ **描寫手法：** 必須包含至少**一句環境描寫**</div>
+                                </div>
+                            </div>
+
+                            <label class="flex items-center gap-3 p-3 bg-amber-50 hover:bg-amber-100 rounded-xl cursor-pointer transition select-none">
+                                <input type="checkbox" id="task-w2-chi" onchange="updateProgress()" class="w-5 h-5 rounded text-amber-500">
+                                <span class="text-xs font-bold text-amber-950">我的中文《我最難忘的一天》大功告成！</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 3 Content (Hidden by default) -->
+            <div id="week-3-content" class="tab-transition hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Column 1 -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-blue-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-fun text-xl font-extrabold text-blue-900 flex items-center gap-2">
+                                    📖 Reading Corner
+                                </h3>
+                                <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded-full">Week 3</span>
+                            </div>
+                            
+                            <div class="bg-blue-50/50 p-4 rounded-2xl border border-blue-100 flex items-center gap-4 mb-4">
+                                <div class="w-12 h-16 bg-blue-950 rounded-lg shadow-sm text-white flex items-center justify-center font-fun text-xl font-extrabold text-center select-none leading-none pt-2">DK / NG</div>
+                                <div>
+                                    <h4 class="font-bold text-stone-900 text-sm">DK Find Out! Dogs / Nat Geo Kids</h4>
+                                    <p class="text-xs text-blue-800">Learn factual scientific vocabulary.</p>
+                                </div>
+                            </div>
+
+                            <p class="text-xs text-stone-500 mb-4 italic">Goal: Non-fiction focus. Note down what surprised you today:</p>
+                            
+                            <div class="space-y-2 mb-4">
+                                <label class="block text-xs font-bold text-stone-600">What surprised me today...</label>
+                                <textarea id="sentence-log-3" placeholder="Example: I learned that dogs' noses are unique like human fingerprints!..." class="w-full p-3 text-xs border-2 border-stone-200 rounded-xl focus:outline-none focus:border-blue-300" rows="3"></textarea>
+                                <button onclick="saveSentenceLog(3)" class="w-full py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-fun font-bold text-xs rounded-lg transition shadow-sm">Save to Journey Journal 💾</button>
+                            </div>
+
+                            <div class="space-y-2 pt-3 border-t border-stone-100">
+                                <label class="flex items-center gap-3 p-2 bg-stone-50 hover:bg-stone-100 rounded-xl cursor-pointer transition select-none">
+                                    <input type="checkbox" id="task-w3-r1" onchange="updateProgress()" class="w-5 h-5 rounded text-amber-500">
+                                    <span class="text-xs font-semibold text-stone-700">Explored dog and animal facts daily!</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Speaking & Science -->
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-emerald-100">
+                            <h3 class="font-fun text-xl font-extrabold text-emerald-950 mb-4 flex items-center gap-2">
+                                🎤 Sharing & 🔬 Field Investigation
+                            </h3>
+                            
+                            <div class="space-y-4">
+                                <div class="bg-cosmic-50/50 p-4 rounded-2xl border border-cosmic-100">
+                                    <h4 class="font-fun font-bold text-sm text-cosmic-900 mb-1">🎤 Dynamic Presentation</h4>
+                                    <p class="text-xs text-stone-700">Present: "What I researched about dogs." Work on engaging transitions!</p>
+                                    <label class="flex items-center gap-2 mt-3 p-1.5 bg-white/70 rounded-lg cursor-pointer">
+                                        <input type="checkbox" id="task-w3-s1" onchange="updateProgress()" class="w-4 h-4 text-cosmic-500 rounded">
+                                        <span class="text-xs text-stone-600">Engagingly presented my research!</span>
+                                    </label>
+                                </div>
+
+                                <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100">
+                                    <h4 class="font-fun font-bold text-sm text-emerald-950 mb-2">🔬 Dog Owner Interview Task</h4>
+                                    <p class="text-[11px] text-stone-700 mb-2">Interview two dog owners (or research online) with these questions:</p>
+                                    <div class="grid grid-cols-2 gap-2 text-[10px] bg-white/80 p-2 rounded-xl border border-emerald-100">
+                                        <div>⭐ Favourite food?</div>
+                                        <div>⭐ Sleeping hours?</div>
+                                        <div>⭐ Daily exercise needs?</div>
+                                        <div>⭐ Funniest habit?</div>
+                                    </div>
+                                    <label class="flex items-center gap-2 mt-3 p-1.5 bg-white/70 rounded-lg cursor-pointer">
+                                        <input type="checkbox" id="task-w3-sc1" onchange="updateProgress()" class="w-4 h-4 text-emerald-500 rounded">
+                                        <span class="text-xs text-stone-600">Completed dog owner interviews!</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2 -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-rose-100">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-fun text-xl font-extrabold text-rose-900 flex items-center gap-2">
+                                    ✍️ English Storytelling Lab
+                                </h3>
+                                <span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Composition</span>
+                            </div>
+
+                            <div class="mb-4">
+                                <span class="text-xs text-stone-500 uppercase font-bold tracking-wide">Topic 3</span>
+                                <h4 class="font-fun font-bold text-lg text-stone-900">A Midnight Rescue in the Rainforest 🌴</h4>
+                            </div>
+
+                            <div class="bg-rose-50/50 p-4 rounded-2xl border border-rose-100 mb-5 text-xs text-stone-700">
+                                <p class="font-bold text-rose-900 mb-1">🎯 Focus: Developing Rich Suspense and Climax</p>
+                                <p>Instead of skipping to the resolution immediately, build up the suspense during the rescue mission! What happened afterwards?</p>
+                            </div>
+
+                            <!-- Requirements List -->
+                            <div class="border border-stone-100 rounded-2xl overflow-hidden mb-5">
+                                <table class="w-full text-xs text-left">
+                                    <thead class="bg-rose-50 text-rose-900 font-bold">
+                                        <tr>
+                                            <th class="p-3">Required Elements</th>
+                                            <th class="p-3 text-right">Self Check</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-stone-100">
+                                        <tr>
+                                            <td class="p-3 font-semibold">⭐ Create suspense using sensory details (cracking branches, dense mist)</td>
+                                            <td class="p-3 text-right">🕵️‍♀️</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 font-semibold">⭐ Expressive dialogues during tense moments</td>
+                                            <td class="p-3 text-right">💬</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 font-semibold">⭐ Detailed setting of a tropical rainforest at midnight</td>
+                                            <td class="p-3 text-right">🐒</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <label class="flex items-center gap-3 p-3 bg-rose-50 hover:bg-rose-100 rounded-xl cursor-pointer transition select-none">
+                                <input type="checkbox" id="task-w3-eng" onchange="updateProgress()" class="w-5 h-5 rounded text-rose-500">
+                                <span class="text-xs font-bold text-rose-950">Finished my Rainforest rescue story!</span>
+                            </label>
+                        </div>
+
+                        <!-- Chinese -->
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-amber-100">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-fun text-xl font-extrabold text-amber-950 flex items-center gap-2">
+                                    🇨🇳 中文創意聯想
+                                </h3>
+                                <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">想像寫作</span>
+                            </div>
+
+                            <div class="mb-4">
+                                <span class="text-xs text-stone-500 uppercase font-bold tracking-wide">主題與格式</span>
+                                <h4 class="font-fun font-bold text-lg text-stone-900">《如果我有一隻小狗》</h4>
+                            </div>
+
+                            <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 mb-5 text-xs text-stone-700">
+                                <p class="font-bold text-amber-950 mb-2">📋 必須包含以下元素：</p>
+                                <div class="grid grid-cols-2 gap-2 text-center font-bold">
+                                    <div class="bg-white p-2 rounded-lg border">🐶 外貌描寫</div>
+                                    <div class="bg-white p-2 rounded-lg border">🍖 生活習性</div>
+                                    <div class="bg-white p-2 rounded-lg border">❤️ 相處心情</div>
+                                    <div class="bg-white p-2 rounded-lg border">💡 學到的功課</div>
+                                </div>
+                            </div>
+
+                            <label class="flex items-center gap-3 p-3 bg-amber-50 hover:bg-amber-100 rounded-xl cursor-pointer transition select-none">
+                                <input type="checkbox" id="task-w3-chi" onchange="updateProgress()" class="w-5 h-5 rounded text-amber-500">
+                                <span class="text-xs font-bold text-amber-950">完成中文想像作文！</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 4 Content (Hidden by default) -->
+            <div id="week-4-content" class="tab-transition hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Column 1 -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-blue-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-fun text-xl font-extrabold text-blue-900 flex items-center gap-2">
+                                    📖 Reading Corner
+                                </h3>
+                                <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded-full">Week 4</span>
+                            </div>
+                            
+                            <div class="bg-blue-50/50 p-4 rounded-2xl border border-blue-100 flex items-center gap-4 mb-4">
+                                <div class="w-12 h-16 bg-indigo-600 rounded-lg shadow-sm text-white flex items-center justify-center font-fun text-2xl font-extrabold text-center select-none">W</div>
+                                <div>
+                                    <h4 class="font-bold text-stone-900 text-sm">Wonder / Winn-Dixie / Wild Robot</h4>
+                                    <p class="text-xs text-blue-800">Select one great book.</p>
+                                </div>
+                            </div>
+
+                            <p class="text-xs text-stone-500 mb-4 italic">Goal: Deep character study. What makes this character unique?</p>
+                            
+                            <div class="space-y-2 mb-4">
+                                <label class="block text-xs font-bold text-stone-600">My Character Observations...</label>
+                                <textarea id="sentence-log-4" placeholder="Write down what traits, actions, or words make the protagonist stand out..." class="w-full p-3 text-xs border-2 border-stone-200 rounded-xl focus:outline-none focus:border-blue-300" rows="3"></textarea>
+                                <button onclick="saveSentenceLog(4)" class="w-full py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-fun font-bold text-xs rounded-lg transition shadow-sm">Save to Journey Journal 💾</button>
+                            </div>
+
+                            <div class="space-y-2 pt-3 border-t border-stone-100">
+                                <label class="flex items-center gap-3 p-2 bg-stone-50 hover:bg-stone-100 rounded-xl cursor-pointer transition select-none">
+                                    <input type="checkbox" id="task-w4-r1" onchange="updateProgress()" class="w-5 h-5 rounded text-amber-500">
+                                    <span class="text-xs font-semibold text-stone-700">Explored character depth daily!</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Art & Poster Start -->
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-amber-100">
+                            <h3 class="font-fun text-xl font-extrabold text-amber-950 mb-4 flex items-center gap-2">
+                                🎨 Art Challenge & 🔬 Science Poster
+                            </h3>
+                            
+                            <div class="space-y-4">
+                                <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100">
+                                    <h4 class="font-fun font-bold text-sm text-amber-900 mb-1">🎨 Challenge: Adding Tiny Details</h4>
+                                    <p class="text-xs text-stone-700">Draw an imaginary animal, but you must add **TEN tiny details** (patterns, secret textures) to level up your art!</p>
+                                    <label class="flex items-center gap-2 mt-3 p-1.5 bg-white/70 rounded-lg cursor-pointer">
+                                        <input type="checkbox" id="task-w4-a1" onchange="updateProgress()" class="w-4 h-4 text-amber-500 rounded">
+                                        <span class="text-xs text-stone-600">My drawing features 10+ details!</span>
+                                    </label>
+                                </div>
+
+                                <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100">
+                                    <h4 class="font-fun font-bold text-sm text-emerald-950 mb-1">🔬 Science Project Planning</h4>
+                                    <p class="text-xs text-stone-700">Start organizing your dog research into a beautiful poster layout!</p>
+                                    <label class="flex items-center gap-2 mt-3 p-1.5 bg-white/70 rounded-lg cursor-pointer">
+                                        <input type="checkbox" id="task-w4-sc1" onchange="updateProgress()" class="w-4 h-4 text-emerald-500 rounded">
+                                        <span class="text-xs text-stone-600">Drafted poster structure!</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2 -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-rose-100">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-fun text-xl font-extrabold text-rose-900 flex items-center gap-2">
+                                    ✍️ English Storytelling Lab
+                                </h3>
+                                <span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Composition</span>
+                            </div>
+
+                            <div class="mb-4">
+                                <span class="text-xs text-stone-500 uppercase font-bold tracking-wide">Topic 4</span>
+                                <h4 class="font-fun font-bold text-lg text-stone-900">Fantasy Picture Prompt 🏰</h4>
+                            </div>
+
+                            <div class="bg-rose-50/50 p-4 rounded-2xl border border-rose-100 mb-5 text-xs text-stone-700">
+                                <p class="font-bold text-rose-900 mb-1">🎯 Goal: Independent Plot Mapping</p>
+                                <p>Select a beautiful fantasy landscape image. Map out your story mountain completely before writing a single sentence!</p>
+                            </div>
+
+                            <!-- Requirements List -->
+                            <div class="border border-stone-100 rounded-2xl overflow-hidden mb-5">
+                                <table class="w-full text-xs text-left">
+                                    <thead class="bg-rose-50 text-rose-900 font-bold">
+                                        <tr>
+                                            <th class="p-3">Required Elements</th>
+                                            <th class="p-3 text-right">Self Check</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-stone-100">
+                                        <tr>
+                                            <td class="p-3 font-semibold">⭐ Visual Story Mountain completed in draft</td>
+                                            <td class="p-3 text-right">🗺️</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 font-semibold">⭐ Story split cleanly into exactly 4 paragraphs</td>
+                                            <td class="p-3 text-right">📄</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 font-semibold">⭐ Rich adjectives used for sensory setting details</td>
+                                            <td class="p-3 text-right">🌈</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <label class="flex items-center gap-3 p-3 bg-rose-50 hover:bg-rose-100 rounded-xl cursor-pointer transition select-none">
+                                <input type="checkbox" id="task-w4-eng" onchange="updateProgress()" class="w-5 h-5 rounded text-rose-500">
+                                <span class="text-xs font-bold text-rose-950">Finished the picture-prompt story!</span>
+                            </label>
+                        </div>
+
+                        <!-- Chinese -->
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-amber-100">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-fun text-xl font-extrabold text-amber-950 flex items-center gap-2">
+                                    🇨🇳 中文看圖表達
+                                </h3>
+                                <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">想像思維</span>
+                            </div>
+
+                            <div class="mb-4">
+                                <span class="text-xs text-stone-500 uppercase font-bold tracking-wide">主題與格式</span>
+                                <h4 class="font-fun font-bold text-lg text-stone-900">看圖作畫寫作 🎨</h4>
+                            </div>
+
+                            <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 mb-5 text-xs text-stone-700">
+                                <p class="font-bold text-amber-950 mb-2">📋 寫作必須包含：</p>
+                                <div class="grid grid-cols-2 gap-2 text-center font-bold">
+                                    <div class="bg-white p-2 rounded-lg border">🏃‍♂️ 動作描寫至少三句</div>
+                                    <div class="bg-white p-2 rounded-lg border">🗣️ 生動角色對話</div>
+                                    <div class="bg-white p-2 rounded-lg border">😊 心情變化</div>
+                                    <div class="bg-white p-2 rounded-lg border">💭 結尾總結感受</div>
+                                </div>
+                            </div>
+
+                            <label class="flex items-center gap-3 p-3 bg-amber-50 hover:bg-amber-100 rounded-xl cursor-pointer transition select-none">
+                                <input type="checkbox" id="task-w4-chi" onchange="updateProgress()" class="w-5 h-5 rounded text-amber-500">
+                                <span class="text-xs font-bold text-amber-950">完成看圖中文寫作！</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 5 Content (Hidden by default) -->
+            <div id="week-5-content" class="tab-transition hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Column 1 -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-blue-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-fun text-xl font-extrabold text-blue-900 flex items-center gap-2">
+                                    📖 Reading Corner
+                                </h3>
+                                <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded-full">Week 5</span>
+                            </div>
+                            
+                            <p class="text-xs text-stone-700 font-bold mb-3">🎖️ Free Choice Week!</p>
+                            <p class="text-xs text-stone-500 mb-4 italic">Goal: Read whatever brings you absolute joy. Note down your favourite quote:</p>
+                            
+                            <div class="space-y-2 mb-4">
+                                <textarea id="sentence-log-5" placeholder="Write down your favourite quote or moment from this week's book..." class="w-full p-3 text-xs border-2 border-stone-200 rounded-xl focus:outline-none focus:border-blue-300" rows="3"></textarea>
+                                <button onclick="saveSentenceLog(5)" class="w-full py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-fun font-bold text-xs rounded-lg transition shadow-sm">Save to Journey Journal 💾</button>
+                            </div>
+
+                            <div class="space-y-2 pt-3 border-t border-stone-100">
+                                <label class="flex items-center gap-3 p-2 bg-stone-50 hover:bg-stone-100 rounded-xl cursor-pointer transition select-none">
+                                    <input type="checkbox" id="task-w5-r1" onchange="updateProgress()" class="w-5 h-5 rounded text-amber-500">
+                                    <span class="text-xs font-semibold text-stone-700">Savoury reading completed daily!</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Grand Finale Science Fair -->
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-emerald-100">
+                            <h3 class="font-fun text-xl font-extrabold text-emerald-950 mb-4 flex items-center gap-2">
+                                🔬 Science Fair Board Display
+                            </h3>
+                            
+                            <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-100 space-y-3">
+                                <h4 class="font-fun font-bold text-sm text-emerald-900">📊 Display Board Checklist</h4>
+                                <div class="grid grid-cols-1 gap-1.5 text-xs text-stone-700">
+                                    <div>⬜ Research Question (Clear Title)</div>
+                                    <div>⬜ Background Investigation</div>
+                                    <div>⬜ Interview Findings & Quotes</div>
+                                    <div>⬜ Data & Photos</div>
+                                    <div>⬜ Interactive Elements</div>
+                                </div>
+                                <label class="flex items-center gap-2 p-1.5 bg-white rounded-lg cursor-pointer">
+                                    <input type="checkbox" id="task-w5-sc1" onchange="updateProgress()" class="w-4 h-4 text-emerald-500 rounded">
+                                    <span class="text-xs text-stone-600">Science Fair Display Completed! 🏆</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2 -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <!-- English Polish and Refine -->
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-rose-100">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-fun text-xl font-extrabold text-rose-900 flex items-center gap-2">
+                                    ✍️ English Storytelling Lab
+                                </h3>
+                                <span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Polishing</span>
+                            </div>
+
+                            <div class="mb-4">
+                                <span class="text-xs text-stone-500 uppercase font-bold tracking-wide">Topic 5</span>
+                                <h4 class="font-fun font-bold text-lg text-stone-900">"My Best Story" (Polish & Refine) 📖</h4>
+                            </div>
+
+                            <div class="bg-rose-50/50 p-4 rounded-2xl border border-rose-100 mb-5 text-xs text-stone-700">
+                                <p class="font-bold text-rose-900 mb-1">🎯 Goal: Polish, Don't Expand</p>
+                                <p>Select your favorite story from the past 4 weeks. Review, check spelling, add sensory details, and make it **better, not longer**!</p>
+                            </div>
+
+                            <label class="flex items-center gap-3 p-3 bg-rose-50 hover:bg-rose-100 rounded-xl cursor-pointer transition select-none">
+                                <input type="checkbox" id="task-w5-eng" onchange="updateProgress()" class="w-5 h-5 rounded text-rose-500">
+                                <span class="text-xs font-bold text-rose-950">Draft edited, polished, and bound into a booklet!</span>
+                            </label>
+                        </div>
+
+                        <!-- Chinese -->
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-amber-100">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="font-fun text-xl font-extrabold text-amber-950 flex items-center gap-2">
+                                    🇨🇳 中文自由創作
+                                </h3>
+                                <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">想像世界</span>
+                            </div>
+
+                            <div class="mb-4">
+                                <span class="text-xs text-stone-500 uppercase font-bold tracking-wide">主題與格式</span>
+                                <h4 class="font-fun font-bold text-lg text-stone-900">自由作文：《神奇的一天》</h4>
+                            </div>
+
+                            <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 mb-5 text-xs text-stone-700">
+                                <p class="font-bold text-amber-950 mb-2">📋 必須包含以下「好詞佳句」要求：</p>
+                                <div class="grid grid-cols-2 gap-2 text-[10px]">
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">🔍 六何法結構</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">🌳 二句優美環境描寫</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">🧠 深刻心理感受</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">🗣️ 生動角色對白</div>
+                                </div>
+                            </div>
+
+                            <label class="flex items-center gap-3 p-3 bg-amber-50 hover:bg-amber-100 rounded-xl cursor-pointer transition select-none">
+                                <input type="checkbox" id="task-w5-chi" onchange="updateProgress()" class="w-5 h-5 rounded text-amber-500">
+                                <span class="text-xs font-bold text-amber-950">中文寫作完全完成！</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- THE STORYTELLER'S TOOLKIT CHECKLIST -->
+        <section class="mt-12 bg-gradient-to-r from-orange-100 to-amber-100 rounded-3xl p-8 border-4 border-amber-300 shadow-md">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-6">
+                <div>
+                    <h3 class="font-fun text-2xl font-extrabold text-orange-950 flex items-center gap-2">
+                        🕵️‍♀️ Cosette's Storyteller Checklist
+                    </h3>
+                    <p class="text-sm text-orange-800">Ask yourself these questions before submitting any story!</p>
+                </div>
+                <div class="font-fun text-lg font-bold text-orange-700 bg-white/80 px-4 py-2 rounded-2xl border-2 border-orange-200 shadow-sm">
+                    ✨ Check and Shine!
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-3">
+                    <label class="flex items-center gap-3 p-3 bg-white/70 rounded-2xl border border-orange-200 cursor-pointer select-none">
+                        <input type="checkbox" id="task-chk-1" onchange="updateProgress()" class="w-5 h-5 rounded text-orange-500">
+                        <span class="text-xs font-bold text-orange-950">Did I clearly describe the setting? (Where is it?)</span>
+                    </label>
+                    <label class="flex items-center gap-3 p-3 bg-white/70 rounded-2xl border border-orange-200 cursor-pointer select-none">
+                        <input type="checkbox" id="task-chk-2" onchange="updateProgress()" class="w-5 h-5 rounded text-orange-500">
+                        <span class="text-xs font-bold text-orange-950">Did I explain the feelings of characters?</span>
+                    </label>
+                </div>
+                <div class="space-y-3">
+                    <label class="flex items-center gap-3 p-3 bg-white/70 rounded-2xl border border-orange-200 cursor-pointer select-none">
+                        <input type="checkbox" id="task-chk-3" onchange="updateProgress()" class="w-5 h-5 rounded text-orange-500">
+                        <span class="text-xs font-bold text-orange-950">Did I finish the ending/resolution properly without rushing?</span>
+                    </label>
+                    <label class="flex items-center gap-3 p-3 bg-white/70 rounded-2xl border border-orange-200 cursor-pointer select-none">
+                        <input type="checkbox" id="task-chk-4" onchange="updateProgress()" class="w-5 h-5 rounded text-orange-500">
+                        <span class="text-xs font-bold text-orange-950">Did I add one more interesting/surprising detail?</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- SUMMMER MOTTO FOOTER -->
+        <footer class="text-center mt-12 py-6 border-t-2 border-stone-200">
+            <p class="font-fun text-xl font-extrabold text-stone-700 italic">
+                "Good writers don't write more. Good writers notice more." 🌞
+            </p>
+            <p class="text-xs text-stone-500 mt-2">© 2026 Cosette Leung. Keep shining!</p>
+        </footer>
+    </main>
+
+    <!-- JAVASCRIPT FOR DYNAMIC INTERACTIONS -->
+    <script>
+        // Track list of all checkboxes
+        const checkboxes = [
+            'task-w1-r1', 'task-w1-r2', 'task-w1-s1', 'task-w1-sc1', 'task-w1-eng', 'task-w1-chi',
+            'task-w2-r1', 'task-w2-r2', 'task-w2-s1', 'task-w2-sc1', 'task-w2-eng', 'task-w2-chi',
+            'task-w3-r1', 'task-w3-s1', 'task-w3-sc1', 'task-w3-eng', 'task-w3-chi',
+            'task-w4-r1', 'task-w4-a1', 'task-w4-sc1', 'task-w4-eng', 'task-w4-chi',
+            'task-w5-r1', 'task-w5-sc1', 'task-w5-eng', 'task-w5-chi',
+            'task-chk-1', 'task-chk-2', 'task-chk-3', 'task-chk-4'
+        ];
+
+        window.onload = function() {
+            lucide.createIcons();
+            loadProgress();
+            updateProgress();
+        }
+
+        // Tab Switcher
+        function switchTab(weekNum) {
+            // Hide all tabs
+            for (let i = 1; i <= 5; i++) {
+                const tabBtn = document.getElementById('tab-' + i);
+                const contentDiv = document.getElementById('week-' + i + '-content');
+                
+                if (tabBtn && contentDiv) {
+                    tabBtn.className = "flex-1 min-w-[90px] py-3 px-4 rounded-xl font-fun font-bold text-sm transition-all duration-300 hover:bg-white/80 focus:outline-none text-stone-600";
+                    contentDiv.classList.add('hidden');
+                }
+            }
+
+            // Highlight Active Tab
+            const activeTab = document.getElementById('tab-' + weekNum);
+            const activeContent = document.getElementById('week-' + weekNum + '-content');
+            if (activeTab && activeContent) {
+                activeTab.className = "flex-1 min-w-[90px] py-3 px-4 rounded-xl font-fun font-bold text-sm transition-all duration-300 shadow-sm focus:outline-none bg-white text-orange-600 border-2 border-amber-300";
+                activeContent.classList.remove('hidden');
+            }
+        }
+
+        // Progress Calculation and Update
+        function updateProgress() {
+            let completed = 0;
+            checkboxes.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && el.checked) {
+                    completed++;
+                }
+            });
+
+            const total = checkboxes.length;
+            const percentage = Math.round((completed / total) * 100);
+
+            // Update DOM Elements
+            document.getElementById('progressFraction').innerText = `${completed}/${total} completed`;
+            document.getElementById('progressPercent').innerText = `${percentage}%`;
+
+            // Update SVG Ring
+            const circle = document.getElementById('progressCircle');
+            if (circle) {
+                const r = circle.r.baseVal.value;
+                const circumference = 2 * Math.PI * r;
+                const strokeDashoffset = circumference - (percentage / 100) * circumference;
+                circle.style.strokeDasharray = circumference;
+                circle.style.strokeDashoffset = strokeDashoffset;
+            }
+
+            // Save state to localstorage
+            saveProgress();
+        }
+
+        // LocalStorage Helpers
+        function saveProgress() {
+            const state = {};
+            checkboxes.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) state[id] = el.checked;
+            });
+            localStorage.setItem('cosette_summer_progress', JSON.stringify(state));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('cosette_summer_progress');
+            if (saved) {
+                const state = JSON.parse(saved);
+                checkboxes.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el && state[id] !== undefined) {
+                        el.checked = state[id];
+                    }
+                });
+            }
+
+            // Load sentence journals
+            for (let i = 1; i <= 5; i++) {
+                const savedSentence = localStorage.getItem('cosette_sentence_log_' + i);
+                const txtArea = document.getElementById('sentence-log-' + i);
+                if (savedSentence && txtArea) {
+                    txtArea.value = savedSentence;
+                }
+            }
+        }
+
+        function saveSentenceLog(weekNum) {
+            const txtArea = document.getElementById('sentence-log-' + weekNum);
+            if (txtArea) {
+                localStorage.setItem('cosette_sentence_log_' + weekNum, txtArea.value);
+                
+                // Show a brief saved animation banner
+                const banner = document.createElement('div');
+                banner.className = "fixed bottom-5 right-5 bg-emerald-600 text-white font-fun font-bold px-4 py-2.5 rounded-xl shadow-lg transform translate-y-10 opacity-0 transition-all duration-300 z-50 text-xs";
+                banner.innerText = "Sentence saved to Journey Journal! 📖✨";
+                document.body.appendChild(banner);
+                
+                setTimeout(() => {
+                    banner.className = "fixed bottom-5 right-5 bg-emerald-600 text-white font-fun font-bold px-4 py-2.5 rounded-xl shadow-lg transform translate-y-0 opacity-100 transition-all duration-300 z-50 text-xs";
+                }, 100);
+
+                setTimeout(() => {
+                    banner.className = "fixed bottom-5 right-5 bg-emerald-600 text-white font-fun font-bold px-4 py-2.5 rounded-xl shadow-lg transform translate-y-10 opacity-0 transition-all duration-300 z-50 text-xs";
+                    setTimeout(() => banner.remove(), 300);
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
