@@ -67,6 +67,13 @@
         .tab-transition {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .img-interactive {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .img-interactive:hover {
+            transform: scale(1.015);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="font-sans text-stone-800 min-h-screen pb-16">
@@ -194,7 +201,7 @@
         <!-- ACTIVE WEEK CONTAINER -->
         <section id="weekly-content-area" class="space-y-8">
             <!-- Week 1 Content (Default Active) -->
-            <div id="week-1-content" class="tab-transition block animate-fade-in">
+            <div id="week-1-content" class="tab-transition block">
                 <!-- Grid: Reading & Writing Modules -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                     <!-- Column 1: Reading Zone -->
@@ -377,16 +384,21 @@
                                 <h4 class="font-fun font-bold text-lg text-stone-900">四格漫畫看圖作文：《拾金不昧》</h4>
                             </div>
 
+                            <!-- Embedded 4-Panel Comic Strip Image -->
+                            <div class="mb-4 overflow-hidden rounded-2xl border-2 border-amber-200 shadow-sm img-interactive cursor-zoom-in">
+                                <img src="107c39f0-4dc3-44c0-b253-24ca0637f842.jpeg" alt="四格漫畫：《拾金不昧》" class="w-full h-auto object-cover" onclick="openLightbox(this.src, '四格漫畫：《拾金不昧》')">
+                            </div>
+
                             <!-- "Six Whys" Table Graphic -->
                             <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 mb-5">
                                 <h5 class="text-xs font-extrabold text-amber-900 mb-3 text-center">寫作結構要領：六何法 + 描寫細節</h5>
                                 <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 text-center text-xs font-bold mb-4">
-                                    <div class="bg-white p-2 rounded-lg border border-amber-200">誰 (Who)</div>
-                                    <div class="bg-white p-2 rounded-lg border border-amber-200">何時 (When)</div>
-                                    <div class="bg-white p-2 rounded-lg border border-amber-200">何地 (Where)</div>
-                                    <div class="bg-white p-2 rounded-lg border border-amber-200">何事 (What)</div>
-                                    <div class="bg-white p-2 rounded-lg border border-amber-200">為何 (Why)</div>
-                                    <div class="bg-white p-2 rounded-lg border border-amber-200">結果 (How)</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200 text-amber-900">誰 (Who)</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200 text-amber-900">何時 (When)</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200 text-amber-900">何地 (Where)</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200 text-amber-900">何事 (What)</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200 text-amber-900">為何 (Why)</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200 text-amber-900">結果 (How)</div>
                                 </div>
                                 <div class="grid grid-cols-2 gap-3 text-[11px] text-stone-700">
                                     <div class="bg-amber-100/40 p-2.5 rounded-xl border border-amber-200/50">
@@ -562,11 +574,11 @@
                             </div>
 
                             <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 mb-5 text-xs">
-                                <div class="grid grid-cols-4 gap-2 text-center font-bold mb-3">
-                                    <div class="bg-white p-2 rounded-lg border">起因 🎬</div>
-                                    <div class="bg-white p-2 rounded-lg border">經過 🧗</div>
-                                    <div class="bg-white p-2 rounded-lg border">結果 🏁</div>
-                                    <div class="bg-white p-2 rounded-lg border">感受 ❤️</div>
+                                <div class="grid grid-cols-4 gap-2 text-center font-bold mb-3 text-amber-900">
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">起因 🎬</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">經過 🧗</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">結果 🏁</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">感受 ❤️</div>
                                 </div>
                                 <div class="space-y-1.5 text-stone-700 bg-white/80 p-3 rounded-xl border border-amber-200">
                                     <div>✨ **好詞累積：** 必須包含至少**兩個形容詞** (例如：興高采烈、五彩繽紛)</div>
@@ -722,11 +734,11 @@
 
                             <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 mb-5 text-xs text-stone-700">
                                 <p class="font-bold text-amber-950 mb-2">📋 必須包含以下元素：</p>
-                                <div class="grid grid-cols-2 gap-2 text-center font-bold">
-                                    <div class="bg-white p-2 rounded-lg border">🐶 外貌描寫</div>
-                                    <div class="bg-white p-2 rounded-lg border">🍖 生活習性</div>
-                                    <div class="bg-white p-2 rounded-lg border">❤️ 相處心情</div>
-                                    <div class="bg-white p-2 rounded-lg border">💡 學到的功課</div>
+                                <div class="grid grid-cols-2 gap-2 text-center font-bold text-amber-900">
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">🐶 外貌描寫</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">🍖 生活習性</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">❤️ 相處心情</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">💡 學到的功課</div>
                                 </div>
                             </div>
 
@@ -824,6 +836,11 @@
                                 <p>Select a beautiful fantasy landscape image. Map out your story mountain completely before writing a single sentence!</p>
                             </div>
 
+                            <!-- Embedded Fantasy Prompts Picture -->
+                            <div class="mb-5 overflow-hidden rounded-2xl border-2 border-rose-200 shadow-sm img-interactive cursor-zoom-in">
+                                <img src="95793c18-4c63-4cea-af40-37c0eba8a828.jpeg" alt="Fantasy Magic Library" class="w-full h-auto object-cover" onclick="openLightbox(this.src, 'Fantasy Prompt: The Secret Tree Library')">
+                            </div>
+
                             <!-- Requirements List -->
                             <div class="border border-stone-100 rounded-2xl overflow-hidden mb-5">
                                 <table class="w-full text-xs text-left">
@@ -872,11 +889,11 @@
 
                             <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 mb-5 text-xs text-stone-700">
                                 <p class="font-bold text-amber-950 mb-2">📋 寫作必須包含：</p>
-                                <div class="grid grid-cols-2 gap-2 text-center font-bold">
-                                    <div class="bg-white p-2 rounded-lg border">🏃‍♂️ 動作描寫至少三句</div>
-                                    <div class="bg-white p-2 rounded-lg border">🗣️ 生動角色對話</div>
-                                    <div class="bg-white p-2 rounded-lg border">😊 心情變化</div>
-                                    <div class="bg-white p-2 rounded-lg border">💭 結尾總結感受</div>
+                                <div class="grid grid-cols-2 gap-2 text-center font-bold text-amber-900">
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">🏃‍♂️ 動作描寫至少三句</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">🗣️ 生動角色對話</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">😊 心情變化</div>
+                                    <div class="bg-white p-2 rounded-lg border border-amber-200">💭 結尾總結感受</div>
                                 </div>
                             </div>
 
@@ -1049,6 +1066,17 @@
         </footer>
     </main>
 
+    <!-- BEAUTIFUL FULL SCREEN INTERACTIVE LIGHTBOX MODAL -->
+    <div id="lightbox" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300 cursor-zoom-out" onclick="closeLightbox()">
+        <div class="relative max-w-4xl max-h-[90vh] w-full flex flex-col items-center" onclick="event.stopPropagation()">
+            <button class="absolute -top-12 right-0 text-white hover:text-orange-400 bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition duration-200 focus:outline-none" onclick="closeLightbox()">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <img id="lightboxImg" src="" alt="Expanded View" class="max-w-full max-h-[80vh] rounded-2xl border-4 border-white/20 shadow-2xl object-contain">
+            <p id="lightboxCaption" class="mt-4 font-fun font-bold text-white text-base tracking-wide drop-shadow text-center"></p>
+        </div>
+    </div>
+
     <!-- JAVASCRIPT FOR DYNAMIC INTERACTIONS -->
     <script>
         // Track list of all checkboxes
@@ -1173,6 +1201,32 @@
                 }, 2000);
             }
         }
+
+        // Lightbox Functions for Zoomable Images
+        function openLightbox(src, caption) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const lightboxCaption = document.getElementById('lightboxCaption');
+            
+            if (lightbox && lightboxImg && lightboxCaption) {
+                lightboxImg.src = src;
+                lightboxCaption.innerText = caption;
+                lightbox.classList.remove('hidden');
+                setTimeout(() => {
+                    lightbox.classList.add('opacity-100');
+                }, 10);
+            }
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox) {
+                lightbox.classList.remove('opacity-100');
+                setTimeout(() => {
+                    lightbox.classList.add('hidden');
+                }, 300);
+            }
+        }
     </script>
-</body> 
+</body>
 </html>
